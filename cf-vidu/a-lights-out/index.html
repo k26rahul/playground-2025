@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>A. Lights Out</title>
+
+    <script src="https://unpkg.com/vue@3.5.13/dist/vue.global.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+  </head>
+  <body>
+    <main class="container py-4">
+      <h1 class="mb-4 text-center">A. Lights Out</h1>
+      <div id="app" class="d-flex flex-column align-items-center">
+        <div class="grid d-grid gap-2 mb-3" style="grid-template-columns: repeat(3, 60px)">
+          <button
+            v-for="(light, index) in lights"
+            :key="index"
+            :class="['btn', light ? 'btn-warning' : 'btn-secondary', 'border', 'rounded-circle', 'p-0']"
+            style="width: 60px; height: 60px; font-size: 2rem"
+            @click="toggleLight(index)"
+          >
+            <i :class="light ? 'bi bi-lightbulb-fill' : 'bi bi-lightbulb'"></i>
+          </button>
+        </div>
+
+        <div class="matrix-display mt-3 text-monospace">
+          <pre class="mb-0" v-for="row in matrixRows" :key="row">{{ row.join(' ') }}</pre>
+        </div>
+
+        <p
+          v-if="allOff || allOn"
+          class="alert mt-3"
+          :class="allOn ? 'alert-warning' : 'alert-success'"
+          class="text-center"
+        >
+          All lights are {{ allOn ? 'on' : 'off' }}!
+        </p>
+      </div>
+    </main>
+
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            lights: Array(9).fill(true),
+          };
+        },
+        methods: {
+          toggleLight(index) {
+            this.lights[index] = !this.lights[index];
+            if (index % 3 !== 0) this.lights[index - 1] = !this.lights[index - 1]; // left
+            if (index % 3 !== 2) this.lights[index + 1] = !this.lights[index + 1]; // right
+            if (index >= 3) this.lights[index - 3] = !this.lights[index - 3]; // up
+            if (index < 6) this.lights[index + 3] = !this.lights[index + 3]; // down
+          },
+        },
+        computed: {
+          allOff() {
+            return this.lights.every(light => !light);
+          },
+          allOn() {
+            return this.lights.every(light => light);
+          },
+          matrixRows() {
+            return [
+              this.lights.slice(0, 3).map(light => (light ? 1 : 0)),
+              this.lights.slice(3, 6).map(light => (light ? 1 : 0)),
+              this.lights.slice(6, 9).map(light => (light ? 1 : 0)),
+            ];
+          },
+        },
+      });
+      app.mount('#app');
+    </script>
+  </body>
+</html>
