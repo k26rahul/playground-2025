@@ -1,0 +1,55 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+#app {
+  display: grid;
+  place-items: center;
+  background: #f0f0f0;
+  font-family: Arial, sans-serif;
+}
+
+.sudoku-grid {
+  display: inline-block;
+  border: 2px solid #333;
+  background: #fff;
+  margin: 40px auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sudoku-row {
+  display: flex;
+}
+
+.sudoku-cell {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #bbb;
+  font-size: 1.2rem;
+  background: #f9f9f9;
+}
+
+/* Thicker borders for 3x3 blocks */
+.sudoku-row:nth-child(3n) .sudoku-cell {
+  border-bottom: 2px solid #333;
+}
+.sudoku-cell:nth-child(3n) {
+  border-right: 2px solid #333;
+}
+.sudoku-row:first-child .sudoku-cell {
+  border-top: 2px solid #333;
+}
+.sudoku-cell:first-child {
+  border-left: 2px solid #333;
+}
