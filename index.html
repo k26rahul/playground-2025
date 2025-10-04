@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Playground 2025 Projects</title>
+  </head>
+  <body>
+    <h1>Playground 2025 Projects</h1>
+    <p>
+      Collection of past experiments and ideas from 2025.<br />
+      Most of these are incomplete and just experimental ideas.
+    </p>
+
+    <ul id="links"></ul>
+    <script>
+      fetch('pages.json')
+        .then(resp => resp.json())
+        .then(pages => {
+          const ul = document.getElementById('links');
+          pages.forEach(path => {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = path;
+            a.textContent = path;
+            li.appendChild(a);
+            ul.appendChild(li);
+          });
+        })
+        .catch(err => console.error('Error loading pages.json:', err));
+    </script>
+  </body>
+</html>
